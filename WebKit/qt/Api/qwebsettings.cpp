@@ -235,8 +235,8 @@ void QWebSettingsPrivate::apply()
                                       global->attributes.value(QWebSettings::LocalContentCanAccessFileUrls));
         settings->setAllowFileAccessFromFileURLs(value);
 
-        value = attributes.value(QWebSettings::XSSAuditorEnabled,
-                                      global->attributes.value(QWebSettings::XSSAuditorEnabled));
+        value = attributes.value(QWebSettings::XSSAuditingEnabled,
+                                      global->attributes.value(QWebSettings::XSSAuditingEnabled));
         settings->setXSSAuditorEnabled(value);
 
 #if ENABLE(TILED_BACKING_STORE)
