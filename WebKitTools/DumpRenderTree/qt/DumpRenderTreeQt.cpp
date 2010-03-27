@@ -192,6 +192,8 @@ void WebPage::resetSettings()
     settings()->resetAttribute(QWebSettings::LinksIncludedInFocusChain);
     settings()->resetAttribute(QWebSettings::OfflineWebApplicationCacheEnabled);
     settings()->resetAttribute(QWebSettings::LocalContentCanAccessRemoteUrls);
+    settings()->resetAttribute(QWebSettings::PluginsEnabled);
+
     m_drt->layoutTestController()->setCaretBrowsingEnabled(false);
     m_drt->layoutTestController()->setFrameFlatteningEnabled(false);
 
