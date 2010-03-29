@@ -805,3 +805,6 @@ fast/text/international/plane2.html
 
 # Misses setMediaType() implementation
 fast/media/print-restores-previous-mediatype.html
+
+# No Widgets 1.0 support
+fast/media/media-feature-wgt-view-mode.html
