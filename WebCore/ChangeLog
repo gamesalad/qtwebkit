@@ -1,5 +1,13 @@
 2010-03-29  Jocelyn Turcotte  <jocelyn.turcotte@nokia.com>
 
+        Reviewed by nobody, build fix.
+
+        [Qt] Fix build break introduced in r56724.
+
+        * WebCore.pro:
+
+2010-03-29  Jocelyn Turcotte  <jocelyn.turcotte@nokia.com>
+
         Reviewed by Simon Hausmann.
 
         [Qt] Do not generate INSTALLS for webkit when building inside Qt.
