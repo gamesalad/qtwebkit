@@ -1,3 +1,14 @@
+2010-03-30  Jocelyn Turcotte  <jocelyn.turcotte@nokia.com>
+
+        Reviewed by nobody, build break.
+
+        [Qt] Fix build break on Qt Mac.
+
+        DESTDIR path on Mac do not include the configuration path by default
+        like on Windows. Have to force it.
+
+        * JavaScriptCore.pro:
+
 2010-02-26  Kenneth Rohde Christiansen  <kenneth@webkit.org>
 
         Reviewed by Simon Fraser.
