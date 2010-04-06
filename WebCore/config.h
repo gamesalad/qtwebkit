@@ -173,8 +173,6 @@
 #endif // PLATFORM(MAC)
 
 #if OS(SYMBIAN)
-#undef WIN32
-#undef _WIN32
 #define USE_SYSTEM_MALLOC 1
 #define U_HAVE_INT8_T 0
 #define U_HAVE_INT16_T 0
