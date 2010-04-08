@@ -808,3 +808,6 @@ fast/media/print-restores-previous-mediatype.html
 
 # No Widgets 1.0 support
 fast/media/media-feature-wgt-view-mode.html
+
+# Need to add functionality to DumpRenderTree to handle scrollbar police changes
+fast/overflow/scrollbar-restored-and-then-locked.html

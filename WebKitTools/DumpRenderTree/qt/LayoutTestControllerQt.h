@@ -163,6 +163,12 @@ public slots:
     int pageNumberForElementById(const QString& id, float width = 0, float height = 0);
     int numberOfPages(float width = maxViewWidth, float height = maxViewHeight);
 
+    /*
+        Policy values: 'on', 'auto' or 'off'.
+        Orientation values: 'vertical' or 'horizontal'.
+    */
+    void setScrollbarPolicy(const QString& orientation, const QString& policy);
+
 private slots:
     void processWork();
 

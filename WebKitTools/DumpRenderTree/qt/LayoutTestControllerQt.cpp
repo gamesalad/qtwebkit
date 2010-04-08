@@ -530,5 +530,29 @@ int LayoutTestController::numberOfPages(float width, float height)
     return qt_drt_numberOfPages(m_drt->webPage()->mainFrame(), width, height);
 }
 
+void LayoutTestController::setScrollbarPolicy(const QString& orientation, const QString& policy)
+{
+    Qt::Orientation o;
+    Qt::ScrollBarPolicy p;
+
+    if (orientation == "vertical")
+        o = Qt::Vertical;
+    else if (orientation == "horizontal")
+        o = Qt::Horizontal;
+    else
+        return;
+
+    if (policy == "on")
+        p = Qt::ScrollBarAlwaysOn;
+    else if (policy == "auto")
+        p = Qt::ScrollBarAsNeeded;
+    else if (policy == "off")
+        p = Qt::ScrollBarAlwaysOff;
+    else
+        return;
+
+    m_drt->webPage()->mainFrame()->setScrollBarPolicy(o, p);
+}
+
 const unsigned LayoutTestController::maxViewWidth = 800;
 const unsigned LayoutTestController::maxViewHeight = 600;
