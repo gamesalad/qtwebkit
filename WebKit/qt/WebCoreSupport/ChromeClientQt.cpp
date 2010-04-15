@@ -330,6 +330,7 @@ bool ChromeClientQt::tabsToLinks() const
 
 IntRect ChromeClientQt::windowResizerRect() const
 {
+#if defined(Q_WS_MAC)
     if (!m_webPage)
         return IntRect();
 
@@ -359,6 +360,9 @@ IntRect ChromeClientQt::windowResizerRect() const
 
     QRect resizeCornerRect = QRect(resizeCornerTopLeft, QSize(scollbarThickness, scollbarThickness));
     return resizeCornerRect.intersected(pageClient->geometryRelativeToOwnerWidget());
+#else
+    return IntRect();
+#endif
 }
 
 void ChromeClientQt::invalidateWindow(const IntRect&, bool)
