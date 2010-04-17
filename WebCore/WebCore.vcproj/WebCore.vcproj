@@ -29473,6 +29473,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\dom\ViewportArguments.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\dom\ViewportArguments.h"
+				>
+			</File>
+			<File
 				RelativePath="..\dom\WebKitAnimationEvent.cpp"
 				>
 			</File>
