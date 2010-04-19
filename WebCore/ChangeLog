@@ -1,3 +1,13 @@
+2010-04-18  Simon Hausmann  <simon.hausmann@nokia.com>
+
+        Reviewed by Laszlo Gombos.
+
+        [Qt] Fix JavaScriptCore's include path for WinCE builds
+
+        https://bugs.webkit.org/show_bug.cgi?id=36751
+
+        * WebCore.pro:
+
 2010-04-19  Jocelyn Turcotte  <jocelyn.turcotte@nokia.com>
 
         Reviewed by Simon Hausmann.
