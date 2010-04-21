@@ -546,6 +546,12 @@ void ChromeClientQt::scheduleCompositingLayerSync()
     if (platformPageClient())
         platformPageClient()->markForSync(true);
 }
+
+bool ChromeClientQt::allowsAcceleratedCompositing() const
+{
+    return (platformPageClient() && platformPageClient()->allowsAcceleratedCompositing());
+}
+
 #endif
 
 QtAbstractWebPopup* ChromeClientQt::createSelectPopup()
