@@ -126,7 +126,7 @@ void PluginView::keepAlive(NPP)
 }
 #endif
 
-#if PLATFORM(MAC)
+#if PLATFORM(MAC) || PLATFORM(CHROMIUM) || PLATFORM(EFL)
 void PluginView::privateBrowsingStateChanged(bool)
 {
 }
