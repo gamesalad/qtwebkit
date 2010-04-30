@@ -2845,3 +2845,7 @@ BUG_JAPHET WIN : http/tests/xmlhttprequest/xmlhttprequest-50ms-download-dispatch
 
 // Caused by http://trac.webkit.org/changeset/56380
 BUG39062 : websocket/tests/long-invalid-header.html = TEXT
+
+// Need rebaselines
+BUGJAMESR : fast/repaint/fixed-move-after-keyboard-scroll.html = IMAGE+TEXT
+
