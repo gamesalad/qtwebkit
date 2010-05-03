@@ -71,6 +71,7 @@ public:
     virtual void setUserStyleSheetLocation(const WebURL&) = 0;
     virtual void setUsesPageCache(bool) = 0;
     virtual void setDownloadableBinaryFontsEnabled(bool) = 0;
+    virtual void setJavaScriptCanAccessClipboard(bool) = 0;
     virtual void setXSSAuditorEnabled(bool) = 0;
     virtual void setLocalStorageEnabled(bool) = 0;
     virtual void setEditableLinkBehaviorNeverLive() = 0;
