@@ -110,7 +110,7 @@ private slots:
     void userAgentApplicationName();
     void userAgentLocaleChange();
 
-    void wrt_viewModes();
+    void viewModes();
 
     void crashTests_LazyInitializationOfMainFrame();
 
@@ -359,10 +359,10 @@ void tst_QWebPage::userStyleSheet()
     QCOMPARE(networkManager->requestedUrls.at(0), QUrl("http://does.not/exist.png"));
 }
 
-void tst_QWebPage::wrt_viewModes()
+void tst_QWebPage::viewModes()
 {
     m_view->setHtml("<body></body>");
-    m_page->setProperty("wrt_viewMode", "minimized");
+    m_page->setProperty("_q_viewMode", "minimized");
 
     QVariant empty = m_page->mainFrame()->evaluateJavaScript("window.styleMedia.matchMedium(\"(-webkit-view-mode)\")");
     QVERIFY(empty.type() == QVariant::Bool && empty.toBool());
