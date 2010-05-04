@@ -139,7 +139,6 @@ protected slots:
     void toggleTiledBackingStore(bool toggle);
     void toggleResizesToContents(bool toggle);
 
-    void toggleWebGL(bool toggle);
     void initializeView(bool useGraphicsView = false);
     void toggleSpatialNavigation(bool b);
     void toggleFullScreenMode(bool enable);
@@ -272,7 +271,6 @@ void LauncherWindow::applyPrefs(LauncherWindow* source)
 
     applySetting(QWebSettings::AcceleratedCompositingEnabled, settings, other, gUseCompositing);
     applySetting(QWebSettings::TiledBackingStoreEnabled, settings, other, gUseTiledBackingStore);
-    applySetting(QWebSettings::WebGLEnabled, settings, other, false);
     applySetting(QWebSettings::FrameFlatteningEnabled, settings, other, gUseFrameFlattening);
 
     if (!isGraphicsBased())
@@ -607,11 +605,6 @@ void LauncherWindow::toggleResizesToContents(bool toggle)
     static_cast<WebViewGraphicsBased*>(m_view)->setResizesToContents(toggle);
 }
 
-void LauncherWindow::toggleWebGL(bool toggle)
-{
-    page()->settings()->setAttribute(QWebSettings::WebGLEnabled, toggle);
-}
-
 void LauncherWindow::initializeView(bool useGraphicsView)
 {
     delete m_view;
@@ -863,10 +856,6 @@ void LauncherWindow::createChrome()
     QAction* toggleGraphicsView = graphicsViewMenu->addAction("Toggle use of QGraphicsView", this, SLOT(initializeView(bool)));
     toggleGraphicsView->setCheckable(true);
     toggleGraphicsView->setChecked(isGraphicsBased());
-
-    QAction* toggleWebGL = toolsMenu->addAction("Toggle WebGL", this, SLOT(toggleWebGL(bool)));
-    toggleWebGL->setCheckable(true);
-    toggleWebGL->setChecked(settings->testAttribute(QWebSettings::WebGLEnabled));
 
     QAction* toggleAcceleratedCompositing = graphicsViewMenu->addAction("Toggle Accelerated Compositing", this, SLOT(toggleAcceleratedCompositing(bool)));
     toggleAcceleratedCompositing->setCheckable(true);
