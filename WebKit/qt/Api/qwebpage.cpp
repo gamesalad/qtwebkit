@@ -1363,6 +1363,12 @@ void QWebPagePrivate::dynamicPropertyChangeEvent(QDynamicPropertyChangeEvent* ev
             frame->document()->updateStyleSelector();
             view->forceLayout();
         }
+    } else if (event->propertyName() == "_q_HTMLTokenizerChunkSize") {
+        int chunkSize = q->property("_q_HTMLTokenizerChunkSize").toInt();
+        q->handle()->page->setCustomHTMLTokenizerChunkSize(chunkSize);
+    } else if (event->propertyName() == "_q_HTMLTokenizerTimeDelay") {
+        double timeDelay = q->property("_q_HTMLTokenizerTimeDelay").toDouble();
+        q->handle()->page->setCustomHTMLTokenizerTimeDelay(timeDelay);
     }
 }
 
