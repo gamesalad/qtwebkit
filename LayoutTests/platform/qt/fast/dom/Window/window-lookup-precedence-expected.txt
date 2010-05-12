@@ -324,8 +324,8 @@ PASS win['XPathException'] == '[object XPathExceptionConstructor]' is true
 PASS win['XPathException'] == '[object XPathExceptionConstructor]' is true
 PASS win['XPathResult'] == '[object XPathResultConstructor]' is true
 PASS win['XPathResult'] == '[object XPathResultConstructor]' is true
-PASS win['XSLTProcessor'] == '[object XSLTProcessorConsructor]' is true
-PASS win['XSLTProcessor'] == '[object XSLTProcessorConsructor]' is true
+FAIL win['XSLTProcessor'] should be null (of type object). Was undefined (of type undefined).
+FAIL win['XSLTProcessor'] should be null. Was [object HTMLInputElement].
 PASS win['onload'] is null
 PASS win['onload'] is null
 PASS win['frames'] == '[object DOMWindow]' is true

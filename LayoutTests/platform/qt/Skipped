@@ -5211,3 +5211,11 @@ fast/loader/stateobjects/replacestate-in-iframe.html
 # [Qt] websocket/tests/long-invalid-header.html fails
 # https://bugs.webkit.org/show_bug.cgi?id=36492
 websocket/tests/long-invalid-header.html
+
+# Skip XSLT tests as it's disabled in this release branch
+fast/events/xsl-onload.xhtml
+fast/xsl
+http/tests/misc/location-test-xsl-style-sheet.xml
+http/tests/security/cross-origin-xsl-BLOCKED.html
+http/tests/security/xss-DENIED-xsl-external-entity-redirect.xml
+http/tests/security/xss-DENIED-xsl-external-entity.xml
