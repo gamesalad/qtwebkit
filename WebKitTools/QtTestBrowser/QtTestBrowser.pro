@@ -55,4 +55,4 @@ contains(QT_CONFIG, opengl) {
 }
 
 RESOURCES += \
-    QtLauncher.qrc
+    QtTestBrowser.qrc

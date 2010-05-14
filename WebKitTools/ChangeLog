@@ -1,3 +1,33 @@
+2010-05-14  Simon Hausmann  <simon.hausmann@nokia.com>
+
+        Rubber-stamped by Antti Koivisto.
+
+        [Qt] Rename QtLauncher to QtTestBrowser
+        https://bugs.webkit.org/show_bug.cgi?id=37665
+
+        * QtLauncher/QtLauncher.pro: Removed.
+        * QtTestBrowser/QtTestBrowser.pro: Added.
+        * QtTestBrowser/QtTestBrowser.qrc: Renamed from WebKitTools/QtLauncher/QtLauncher.qrc.
+        * QtTestBrowser/fpstimer.cpp: Renamed from WebKitTools/QtLauncher/fpstimer.cpp.
+        * QtTestBrowser/fpstimer.h: Renamed from WebKitTools/QtLauncher/fpstimer.h.
+        * QtTestBrowser/locationedit.cpp: Renamed from WebKitTools/QtLauncher/locationedit.cpp.
+        * QtTestBrowser/locationedit.h: Renamed from WebKitTools/QtLauncher/locationedit.h.
+        * QtTestBrowser/main.cpp: Renamed from WebKitTools/QtLauncher/main.cpp.
+        * QtTestBrowser/mainwindow.cpp: Renamed from WebKitTools/QtLauncher/mainwindow.cpp.
+        * QtTestBrowser/mainwindow.h: Renamed from WebKitTools/QtLauncher/mainwindow.h.
+        * QtTestBrowser/urlloader.cpp: Renamed from WebKitTools/QtLauncher/urlloader.cpp.
+        * QtTestBrowser/urlloader.h: Renamed from WebKitTools/QtLauncher/urlloader.h.
+        * QtTestBrowser/useragentlist.txt: Renamed from WebKitTools/QtLauncher/useragentlist.txt.
+        * QtTestBrowser/utils.cpp: Renamed from WebKitTools/QtLauncher/utils.cpp.
+        * QtTestBrowser/utils.h: Renamed from WebKitTools/QtLauncher/utils.h.
+        * QtTestBrowser/webinspector.h: Renamed from WebKitTools/QtLauncher/webinspector.h.
+        * QtTestBrowser/webpage.cpp: Renamed from WebKitTools/QtLauncher/webpage.cpp.
+        * QtTestBrowser/webpage.h: Renamed from WebKitTools/QtLauncher/webpage.h.
+        * QtTestBrowser/webview.cpp: Renamed from WebKitTools/QtLauncher/webview.cpp.
+        * QtTestBrowser/webview.h: Renamed from WebKitTools/QtLauncher/webview.h.
+        * Scripts/run-launcher:
+        * Scripts/webkitdirs.pm:
+
 2010-05-13  Diego Gonzalez  <diegohcg@webkit.org>
 
         Reviewed by Kenneth Rohde Christiansen.
