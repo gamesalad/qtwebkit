@@ -1982,7 +1982,7 @@ void RenderBlock::paintSelection(PaintInfo& paintInfo, int tx, int ty)
 }
 
 #ifndef BUILDING_ON_TIGER
-    static void clipOutPositionedObjects(const RenderObject::PaintInfo* paintInfo, int tx, int ty, RenderBlock::PositionedObjectsListHashSet* positionedObjects)
+static void clipOutPositionedObjects(const RenderObject::PaintInfo* paintInfo, int tx, int ty, RenderBlock::PositionedObjectsListHashSet* positionedObjects)
 {
     if (!positionedObjects)
         return;
@@ -2274,7 +2274,7 @@ void RenderBlock::insertPositionedObject(RenderBox* o)
 {
     // Create the list of special objects if we don't aleady have one
     if (!m_positionedObjects)
-        m_positionedObjects = new RenderBlock::PositionedObjectsListHashSet;
+        m_positionedObjects = new PositionedObjectsListHashSet;
 
     m_positionedObjects->add(o);
 }
