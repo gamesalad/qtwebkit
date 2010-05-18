@@ -1,3 +1,18 @@
+2010-05-18  Jedrzej Nowacki  <jedrzej.nowacki@nokia.com>
+
+        Reviewed by Simon Hausmann.
+
+        Fix QWebHistory serialization.
+
+        Regression was caused by bug 33224. The streaming function
+        should generate a documentSequenceNumber for all loaded values.
+
+        [Qt] tst_QWebHistory::serialize_2() fails
+        https://bugs.webkit.org/show_bug.cgi?id=37322
+
+        * Api/qwebhistory.cpp:
+        (operator>>):
+
 2010-05-14  Kent Hansen <kent.hansen@nokia.com>, Jocelyn Turcotte <jocelyn.turcotte@nokia.com>, Tor Arne Vestbø <tor.arne.vestbo@nokia.com>, Henry Haverinen <henry.haverinen@nokia.com>, Jedrzej Nowacki <jedrzej.nowacki@nokia.com>, Andreas Kling <andreas.kling@nokia.com>
 
         Reviewed by Simon Hausmann.
