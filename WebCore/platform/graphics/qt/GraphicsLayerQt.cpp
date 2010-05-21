@@ -43,6 +43,7 @@
 
 namespace WebCore {
 
+#ifndef QT_NO_GRAPHICSEFFECT
 class MaskEffectQt : public QGraphicsEffect {
 public:
     MaskEffectQt(QObject* parent, QGraphicsItem* maskLayer)
@@ -96,6 +97,7 @@ public:
 
     QGraphicsItem* m_maskLayer;
 };
+#endif // QT_NO_GRAPHICSEFFECT
 
 class GraphicsLayerQtImpl : public QGraphicsObject {
     Q_OBJECT
@@ -184,7 +186,9 @@ public:
     TransformationMatrix m_transformRelativeToRootLayer;
     bool m_transformAnimationRunning;
     bool m_opacityAnimationRunning;
+#ifndef QT_NO_GRAPHICSEFFECT
     QWeakPointer<MaskEffectQt> m_maskEffect;
+#endif
 
     struct ContentData {
         QPixmap pixmap;
@@ -520,6 +524,7 @@ void GraphicsLayerQtImpl::flushChanges(bool recursive, bool forceUpdateTransform
         // we can't paint here, because we don't know if the mask layer
         // itself is ready... we'll have to wait till this layer tries to paint
         setFlag(ItemClipsChildrenToShape, m_layer->maskLayer() || m_layer->masksToBounds());
+#ifndef QT_NO_GRAPHICSEFFECT
         setGraphicsEffect(0);
         if (m_layer->maskLayer()) {
             if (GraphicsLayerQtImpl* mask = qobject_cast<GraphicsLayerQtImpl*>(m_layer->maskLayer()->platformLayer()->toGraphicsObject())) {
@@ -527,6 +532,7 @@ void GraphicsLayerQtImpl::flushChanges(bool recursive, bool forceUpdateTransform
                 setGraphicsEffect(mask->m_maskEffect.data());
             }
         }
+#endif
     }
 
     if (m_changeMask & SizeChange) {
@@ -601,6 +607,7 @@ void GraphicsLayerQtImpl::flushChanges(bool recursive, bool forceUpdateTransform
     if ((m_changeMask & ContentsOpaqueChange) && m_state.contentsOpaque != m_layer->contentsOpaque())
         prepareGeometryChange();
 
+#ifndef QT_NO_GRAPHICSEFFECT
     if (m_maskEffect)
         m_maskEffect.data()->update();
     else if (m_changeMask & DisplayChange) {        
@@ -611,6 +618,7 @@ void GraphicsLayerQtImpl::flushChanges(bool recursive, bool forceUpdateTransform
         update(m_pendingContent.regionToUpdate.boundingRect());
         m_pendingContent.regionToUpdate = QRegion();
     }
+#endif
 
     if ((m_changeMask & BackgroundColorChange) && (m_pendingContent.backgroundColor != m_currentContent.backgroundColor))
         update();
