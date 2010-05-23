@@ -1043,7 +1043,7 @@ LauncherApplication::LauncherApplication(int& argc, char** argv)
 {
     // To allow QWebInspector's configuration persistence
     setOrganizationName("Nokia");
-    setApplicationName("QtLauncher");
+    setApplicationName("QtTestBrowser");
     setApplicationVersion("0.1");
 
     applyDefaultSettings();
@@ -1062,7 +1062,7 @@ void LauncherApplication::handleUserOptions()
 {
     QStringList args = arguments();
     QFileInfo program(args.at(0));
-    QString programName("QtLauncher");
+    QString programName("QtTestBrowser");
     if (program.exists())
         programName = program.baseName();
 
