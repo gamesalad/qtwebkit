@@ -113,6 +113,8 @@ COMPILE_ASSERT(offsetof(struct JITStackFrame, savedEBX) == 0x3c, JITStackFrame_s
 COMPILE_ASSERT(offsetof(struct JITStackFrame, callFrame) == 0x58, JITStackFrame_callFrame_offset_matches_ctiTrampoline);
 COMPILE_ASSERT(offsetof(struct JITStackFrame, code) == 0x50, JITStackFrame_code_offset_matches_ctiTrampoline);
 
+static void __attribute__((used)) asm_wrapper()
+{
 asm volatile (
 ".text\n"
 ".globl " SYMBOL_STRING(ctiTrampoline) "\n"
@@ -162,7 +164,8 @@ SYMBOL_STRING(ctiOpThrowNotCaught) ":" "\n"
     "popl %ebp" "\n"
     "ret" "\n"
 );
-    
+}
+
 #elif COMPILER(GCC) && CPU(X86_64)
 
 #if USE(JIT_STUB_ARGUMENT_VA_LIST)
