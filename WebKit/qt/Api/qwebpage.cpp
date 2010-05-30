@@ -51,6 +51,7 @@
 #include "EditorClientQt.h"
 #include "SecurityOrigin.h"
 #include "Settings.h"
+#include "TiledBackingStore.h"
 #include "Page.h"
 #include "Pasteboard.h"
 #include "FrameLoader.h"
