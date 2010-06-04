@@ -610,15 +610,17 @@ void GraphicsLayerQtImpl::flushChanges(bool recursive, bool forceUpdateTransform
 #ifndef QT_NO_GRAPHICSEFFECT
     if (m_maskEffect)
         m_maskEffect.data()->update();
-    else if (m_changeMask & DisplayChange) {        
-        // Recache now: all the content is ready and we don't want to wait until the paint event. We only need to do this for HTML content, 
-        // there's no point in caching directly composited content like images or solid rectangles.
+    else
+#endif
+    if (m_changeMask & DisplayChange) {
+        // Recache now: all the content is ready and we don't want to wait until the paint event.
+        // We only need to do this for HTML content, there's no point in caching directly composited
+        // content like images or solid rectangles.
         if (m_pendingContent.contentType == HTMLContentType)
             recache(m_pendingContent.regionToUpdate);
         update(m_pendingContent.regionToUpdate.boundingRect());
         m_pendingContent.regionToUpdate = QRegion();
     }
-#endif
 
     if ((m_changeMask & BackgroundColorChange) && (m_pendingContent.backgroundColor != m_currentContent.backgroundColor))
         update();
