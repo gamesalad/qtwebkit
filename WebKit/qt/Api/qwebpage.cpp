@@ -454,7 +454,7 @@ QWebPagePrivate::QWebPagePrivate(QWebPage *qq)
     JSC::initializeThreading();
     WebCore::SecurityOrigin::setLocalLoadPolicy(WebCore::SecurityOrigin::AllowLocalLoadsForLocalAndSubstituteData);
 #if QT_VERSION < QT_VERSION_CHECK(4, 7, 0)
-    WebCore::Font::setCodePath(Font::Complex);
+    WebCore::Font::setCodePath(WebCore::Font::Complex);
 #endif
 
     chromeClient = new ChromeClientQt(q);
