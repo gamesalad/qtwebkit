@@ -38,7 +38,6 @@ using namespace Unicode;
 
 namespace WebCore {
 
-#if USE(FONT_FAST_PATH)
 const uint8_t Font::gRoundingHackCharacterTable[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 1 /*\t*/, 1 /*\n*/, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1 /*space*/, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 /*-*/, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 /*?*/,
@@ -49,7 +48,6 @@ const uint8_t Font::gRoundingHackCharacterTable[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
-#endif
 
 Font::CodePath Font::s_codePath = Auto;
 
@@ -174,10 +172,8 @@ void Font::drawText(GraphicsContext* context, const TextRun& run, const FloatPoi
     }
 #endif
 
-#if USE(FONT_FAST_PATH)
     if (codePath(run) != Complex)
         return drawSimpleText(context, run, point, from, to);
-#endif
 
     return drawComplexText(context, run, point, from, to);
 }
@@ -189,7 +185,6 @@ float Font::floatWidth(const TextRun& run, HashSet<const SimpleFontData*>* fallb
         return floatWidthUsingSVGFont(run);
 #endif
 
-#if USE(FONT_FAST_PATH)
     CodePath codePathToUse = codePath(run);
     if (codePathToUse != Complex) {
         // If the complex text implementation cannot return fallback fonts, avoid
@@ -197,7 +192,6 @@ float Font::floatWidth(const TextRun& run, HashSet<const SimpleFontData*>* fallb
         static bool returnFallbackFonts = canReturnFallbackFontsForComplexText();
         return floatWidthForSimpleText(run, 0, returnFallbackFonts ? fallbackFonts : 0, codePathToUse == SimpleWithGlyphOverflow ? glyphOverflow : 0);
     }
-#endif
 
     return floatWidthForComplexText(run, fallbackFonts, glyphOverflow);
 }
@@ -214,10 +208,8 @@ float Font::floatWidth(const TextRun& run, int extraCharsAvailable, int& charsCo
     charsConsumed = run.length();
     glyphName = "";
 
-#if USE(FONT_FAST_PATH)
     if (codePath(run) != Complex)
         return floatWidthForSimpleText(run, 0);
-#endif
 
     return floatWidthForComplexText(run);
 }
@@ -231,10 +223,8 @@ FloatRect Font::selectionRectForText(const TextRun& run, const IntPoint& point, 
 
     to = (to == -1 ? run.length() : to);
 
-#if USE(FONT_FAST_PATH)
     if (codePath(run) != Complex)
         return selectionRectForSimpleText(run, point, h, from, to);
-#endif
 
     return selectionRectForComplexText(run, point, h, from, to);
 }
@@ -246,10 +236,8 @@ int Font::offsetForPosition(const TextRun& run, int x, bool includePartialGlyphs
         return offsetForPositionForTextUsingSVGFont(run, x, includePartialGlyphs);
 #endif
 
-#if USE(FONT_FAST_PATH)
     if (codePath(run) != Complex)
         return offsetForPositionForSimpleText(run, x, includePartialGlyphs);
-#endif
 
     return offsetForPositionForComplexText(run, x, includePartialGlyphs);
 }
@@ -310,6 +298,11 @@ Font::CodePath Font::codePath(const TextRun& run) const
 {
     if (s_codePath != Auto)
         return s_codePath;
+
+#if PLATFORM(QT)
+    if (run.padding() || run.rtl() || isSmallCaps() || wordSpacing() || letterSpacing())
+        return Complex;
+#endif
 
     // Start from 0 since drawing and highlighting also measure the characters before run->from
     for (int i = 0; i < run.length(); i++) {
