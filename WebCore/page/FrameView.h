@@ -213,6 +213,15 @@ public:
 protected:
     virtual bool scrollContentsFastPath(const IntSize& scrollDelta, const IntRect& rectToScroll, const IntRect& clipRect);
 
+    // Normal delay
+    static void setRepaintThrottlingDeferredRepaintDelay(double p);
+    // Negative value would mean that first few repaints happen without a delay
+    static void setRepaintThrottlingnInitialDeferredRepaintDelayDuringLoading(double p);
+    // The delay grows on each repaint to this maximum value
+    static void setRepaintThrottlingMaxDeferredRepaintDelayDuringLoading(double p);
+    // On each repaint the delay increses by this amount
+    static void setRepaintThrottlingDeferredRepaintDelayIncrementDuringLoading(double p);
+    
 private:
     FrameView(Frame*);
 
@@ -340,6 +349,11 @@ private:
 
     // Renderer to hold our custom scroll corner.
     RenderScrollbarPart* m_scrollCorner;
+
+    static double s_deferredRepaintDelay;
+    static double s_initialDeferredRepaintDelayDuringLoading;
+    static double s_maxDeferredRepaintDelayDuringLoading;
+    static double s_deferredRepaintDelayIncrementDuringLoading;
 };
 
 #if ENABLE(INSPECTOR)
