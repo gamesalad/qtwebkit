@@ -210,9 +210,6 @@ public:
     bool isFrameViewScrollCorner(RenderScrollbarPart* scrollCorner) const { return m_scrollCorner == scrollCorner; }
     void invalidateScrollCorner();
 
-protected:
-    virtual bool scrollContentsFastPath(const IntSize& scrollDelta, const IntRect& rectToScroll, const IntRect& clipRect);
-
     // Normal delay
     static void setRepaintThrottlingDeferredRepaintDelay(double p);
     // Negative value would mean that first few repaints happen without a delay
@@ -221,7 +218,10 @@ protected:
     static void setRepaintThrottlingMaxDeferredRepaintDelayDuringLoading(double p);
     // On each repaint the delay increses by this amount
     static void setRepaintThrottlingDeferredRepaintDelayIncrementDuringLoading(double p);
-    
+
+protected:
+    virtual bool scrollContentsFastPath(const IntSize& scrollDelta, const IntRect& rectToScroll, const IntRect& clipRect);
+
 private:
     FrameView(Frame*);
 
