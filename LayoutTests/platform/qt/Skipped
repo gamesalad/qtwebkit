@@ -5235,3 +5235,6 @@ http/tests/security/xss-DENIED-xsl-external-entity.xml
 # https://bugs.webkit.org/show_bug.cgi?id=42152
 fast/loader/non-deferred-substitute-load.html
 
+# [Qt] fast/text/bidi-explicit-embedding-past-end.html fails
+# https://bugs.webkit.org/show_bug.cgi?id=41241
+fast/text/bidi-explicit-embedding-past-end.html
