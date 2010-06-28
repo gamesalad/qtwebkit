@@ -1402,10 +1402,7 @@ bool GraphicsLayerQt::addAnimation(const KeyframeValueList& values, const IntSiz
     if (anim->fillsBackwards())
         newAnim->setCurrentTime(0);
 
-    if (anim->delay())
-        QTimer::singleShot(anim->delay() * 1000, newAnim, SLOT(start()));
-    else
-        newAnim->start();
+    newAnim->start();
 
     // we synchronize the animation's clock to WebCore's timeOffset
     newAnim->setCurrentTime(timeOffset * 1000);
