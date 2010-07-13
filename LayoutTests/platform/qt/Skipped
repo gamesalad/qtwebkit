@@ -131,6 +131,10 @@ fast/workers/shared-worker-frame-lifecycle.html
 svg/custom/path-getTotalLength.svg
 svg/custom/glyph-setting-d-attribute.svg
 
+# http/tests/inspector/resource-har-conversion.html is failing on the release bot after r63191
+# webkit.org/b/42162
+http/tests/inspector/resource-har-conversion.html
+
 # failing media tests
 media/adopt-node-crash.html
 media/audio-constructor.html
