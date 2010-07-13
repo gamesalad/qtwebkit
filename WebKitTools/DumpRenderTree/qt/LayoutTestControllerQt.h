@@ -104,6 +104,7 @@ public slots:
     void queueBackNavigation(int howFarBackward);
     void queueForwardNavigation(int howFarForward);
     void queueLoad(const QString& url, const QString& target = QString());
+    void queueLoadHTMLString(const QString& content, const QString& baseURL = QString());
     void queueReload();
     void queueLoadingScript(const QString& script);
     void queueNonLoadingScript(const QString& script);

@@ -141,6 +141,8 @@ static QString drtDescriptionSuitableForTestResult(const WebCore::ResourceRespon
 namespace WebCore
 {
 
+bool FrameLoaderClientQt::deferMainResourceDataLoad = true;
+
 FrameLoaderClientQt::FrameLoaderClientQt()
     : m_frame(0)
     , m_webFrame(0)
@@ -812,7 +814,7 @@ bool FrameLoaderClientQt::shouldFallBack(const WebCore::ResourceError&)
 WTF::PassRefPtr<WebCore::DocumentLoader> FrameLoaderClientQt::createDocumentLoader(const WebCore::ResourceRequest& request, const SubstituteData& substituteData)
 {
     RefPtr<DocumentLoader> loader = DocumentLoader::create(request, substituteData);
-    if (substituteData.isValid())
+    if (!deferMainResourceDataLoad || substituteData.isValid())
         loader->setDeferMainResourceDataLoad(false);
     return loader.release();
 }

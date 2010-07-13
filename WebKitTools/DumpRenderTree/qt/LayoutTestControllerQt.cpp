@@ -247,6 +247,11 @@ void LayoutTestController::queueLoad(const QString& url, const QString& target)
     WorkQueue::shared()->queue(new LoadItem(absoluteUrl, target, m_drt->webPage()));
 }
 
+void LayoutTestController::queueLoadHTMLString(const QString& content, const QString& baseURL)
+{
+    WorkQueue::shared()->queue(new LoadHTMLStringItem(content, baseURL, m_drt->webPage()));
+}
+
 void LayoutTestController::queueReload()
 {
     //qDebug() << ">>>queueReload";
