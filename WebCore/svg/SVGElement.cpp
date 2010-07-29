@@ -310,7 +310,7 @@ void SVGElement::attributeChanged(Attribute* attr, bool preserveDecls)
     // SVGAnimatedPropertySynchronizer may call NamedNodeMap::removeAttribute(), which in turn calls attributeChanged().
     // At this point we're not allowed to call svgAttributeChanged() again - it may lead to extra work being done, or crashes
     // see bug https://bugs.webkit.org/show_bug.cgi?id=40994.
-    if (isSynchronizingSVGAttributes())
+    if (m_synchronizingSVGAttributes)
         return;
 
     svgAttributeChanged(attr->name());
