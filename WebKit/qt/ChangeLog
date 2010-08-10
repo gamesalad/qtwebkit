@@ -5,7 +5,7 @@
         [Qt] Input mode states are not reset after entering a password field
         https://bugs.webkit.org/show_bug.cgi?id=43530
 
-        Input mode hints are not reset if clicking on password <input> elements then 
+        Input mode hints are not reset if clicking on password <input> elements then
         clicking on <textarea> elements
 
         * WebCoreSupport/EditorClientQt.cpp:
