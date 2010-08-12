@@ -2,6 +2,15 @@
 
         Reviewed by NOBODY (OOPS!).
 
+        Reindent the asm code I've moved to inside the function
+        (previous commit)
+
+        * jit/JITStubs.cpp:
+
+2010-06-16  Thiago Macieira <thiago.macieira@nokia.com>
+
+        Reviewed by NOBODY (OOPS!).
+
         Fix the JIT compilation with the Intel 32-bit C++ compiler.
 
         ICC doesn't understand the use of "asm" statements outside of
