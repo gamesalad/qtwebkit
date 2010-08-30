@@ -249,8 +249,8 @@ typedef struct _NPRect
 
 typedef struct _NPSize
 {
-  int32_t width;
-  int32_t height;
+  int32 width;
+  int32 height;
 } NPSize;
 
 #ifdef XP_UNIX
@@ -556,12 +556,12 @@ typedef struct _NPWindow
 typedef struct _NPImageExpose
 {
   char*    data;       /* image pointer */
-  int32_t  stride;     /* Stride of data image pointer */
-  int32_t  depth;      /* Depth of image pointer */
-  int32_t  x;          /* Expose x */
-  int32_t  y;          /* Expose y */
-  uint32_t width;      /* Expose width */
-  uint32_t height;     /* Expose height */
+  int32  stride;     /* Stride of data image pointer */
+  int32  depth;      /* Depth of image pointer */
+  int32  x;          /* Expose x */
+  int32  y;          /* Expose y */
+  uint32 width;      /* Expose width */
+  uint32 height;     /* Expose height */
   NPSize   dataSize;   /* Data buffer size */
   float    translateX; /* translate X matrix value */
   float    translateY; /* translate Y matrix value */
