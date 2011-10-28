@@ -1,3 +1,11 @@
+2011-10-28  Zeno Albisser  <zeno.albisser@nokia.com>
+
+        [Qt] Unreviewed: Build fix for MSVC2005
+
+        Patch by Andy Shaw <andy.shaw@digia.com>
+
+        * platform/win/SystemTimeWin.cpp:
+
 2011-10-13  Zeno Albisser  <zeno.albisser@nokia.com>
 
         [Qt] QtWebKit build error for Mac 32bit
