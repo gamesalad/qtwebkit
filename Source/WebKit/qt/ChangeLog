@@ -1,3 +1,11 @@
+2011-11-01  Alexis Menard  <alexis.menard@openbossa.org>
+
+        Unreviewed Qt documentation fix.
+
+        This signal is Qt 4.8 material.
+
+        * Api/qwebpage.cpp:
+
 2011-10-21  Zeno Albisser  <zeno.albisser@nokia.com>
 
         [Qt] WebKit build does not respect QMAKE_MAC_SDK variable.
