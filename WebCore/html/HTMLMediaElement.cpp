@@ -995,7 +995,7 @@ void HTMLMediaElement::seek(float time, ExceptionCode& ec)
 
     // 4
     RefPtr<TimeRanges> seekableRanges = seekable();
-    if (!seekableRanges->contain(time)) {
+    if (time > 0 && !seekableRanges->contain(time)) {
         ec = INDEX_SIZE_ERR;
         return;
     }
@@ -1375,6 +1375,7 @@ void HTMLMediaElement::scheduleTimeupdateEvent(bool periodicEvent)
         scheduleEvent(eventNames().timeupdateEvent);
         m_lastTimeUpdateEventWallTime = now;
         m_lastTimeUpdateEventMovieTime = movieTime;
+		m_player->timeChanged();
     }
 }
 
@@ -1723,6 +1724,7 @@ void HTMLMediaElement::updatePlayState()
         m_player->play();
         startPlaybackProgressTimer();
         m_playing = true;
+		m_seeking = false;
     } else if (!shouldBePlaying && !playerPaused) {
         m_player->pause();
         m_playbackProgressTimer.stop();

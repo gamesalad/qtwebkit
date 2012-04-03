@@ -24,6 +24,7 @@
 #include "MediaPlayerPrivate.h"
 
 #include <QObject>
+#include <QTime>
 #include <phononnamespace.h>
 
 QT_BEGIN_NAMESPACE
@@ -81,8 +82,10 @@ namespace WebCore {
         IntSize naturalSize() const;
         bool hasVideo() const;
         bool hasAudio() const;
+		bool isShortSound() const;
 
         void load(const String &url);
+		void load(const QUrl& url);
         void cancelLoad();
 
         void play();
@@ -147,6 +150,10 @@ namespace WebCore {
         Phonon::AudioOutput* m_audioOutput;
 
         bool m_isVisible;
+		bool m_isSeekable;
+
+		float m_shortSoundDuration;
+		QTime m_shortSoundTime;
     };
 }
 

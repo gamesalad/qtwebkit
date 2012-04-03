@@ -45,6 +45,11 @@
 #include <phonon/mediaobject.h>
 #include <phonon/videowidget.h>
 
+#ifdef _WINDOWS
+#include "vorbis/vorbisenc.h"
+#include "vorbis/vorbisfile.h"
+#endif
+
 using namespace Phonon;
 
 #define LOG_MEDIAOBJECT() (LOG(Media, "%s", debugMediaObject(this, *m_mediaObject).constData()))
@@ -91,6 +96,8 @@ MediaPlayerPrivate::MediaPlayerPrivate(MediaPlayer* player)
     , m_videoWidget(new VideoWidget(0))
     , m_audioOutput(new AudioOutput())
     , m_isVisible(false)
+	, m_isSeekable(false)
+	, m_shortSoundDuration(std::numeric_limits<float>::infinity())
 {
     // Hint to Phonon to disable overlay painting
     m_videoWidget->setAttribute(Qt::WA_DontShowOnScreen);
@@ -219,9 +226,32 @@ bool MediaPlayerPrivate::hasAudio() const
     return hasAudio;
 }
 
+bool MediaPlayerPrivate::isShortSound() const
+{
+	return !m_isSeekable && m_shortSoundDuration != std::numeric_limits<float>::infinity();
+}
+
 void MediaPlayerPrivate::load(const String& url)
 {
-    LOG(Media, "MediaPlayerPrivatePhonon::load(\"%s\")", url.utf8().data());
+#if 0
+	// temp - replace extension with .wav
+	String urlwav = url;
+	if (urlwav.endsWith(".ogg")) {
+		urlwav.replace(".ogg", ".wav");
+	}
+	else if (urlwav.endsWith(".m4a")) {
+		urlwav.replace(".m4a", ".wav");
+	}
+
+    load(QUrl(urlwav));
+#else
+	load(QUrl(url));
+#endif
+}
+
+void MediaPlayerPrivate::load(const QUrl& url)
+{
+	LOG(Media, "MediaPlayerPrivatePhonon::load(\"%s\")", url.toString().toUtf8().data());
 
     // We are now loading
     if (m_networkState != MediaPlayer::Loading) {
@@ -235,7 +265,11 @@ void MediaPlayerPrivate::load(const String& url)
         m_player->readyStateChanged();
     }
 
-    m_mediaObject->setCurrentSource(QUrl(url));
+	m_shortSoundDuration = std::numeric_limits<float>::infinity();
+	m_shortSoundTime = QTime();
+
+    m_mediaObject->setCurrentSource(url);
+	m_isSeekable = m_mediaObject->isSeekable();
     m_audioOutput->setVolume(m_player->volume());
     setVisible(m_player->visible());
 }
@@ -248,7 +282,7 @@ void MediaPlayerPrivate::cancelLoad()
 
 void MediaPlayerPrivate::play()
 {
-    LOG(Media, "MediaPlayerPrivatePhonon::play()");
+	LOG(Media, "MediaPlayerPrivatePhonon::play()");
     m_mediaObject->play();
 }
 
@@ -268,15 +302,33 @@ bool MediaPlayerPrivate::paused() const
 
 void MediaPlayerPrivate::seek(float position)
 {
-    LOG(Media, "MediaPlayerPrivatePhonon::seek(%f)", position);
+    LOG(Media, "MediaPlayerPrivatePhonon::seek(%f)");
 
-    if (!m_mediaObject->isSeekable())
-        return;
+	if (m_isSeekable) {
+		switch (m_mediaObject->state()) {
+		case PlayingState:
+		case BufferingState:
+		case PausedState:
+			if (position < 0.0f)
+				position = 0.0f;
+			if (position > duration())
+				position = duration();
 
-    if (position > duration())
-        position = duration();
-
-    m_mediaObject->seek(position * 1000.0f);
+			m_mediaObject->seek(position * 1000.0f);
+			break;
+		default:
+			break;
+		}
+	}
+	else if (position <= 0.0f && m_mediaObject->currentSource().url().isValid() && m_readyState == HaveEnoughData) {
+		// reload the sound
+		load(m_mediaObject->currentSource().url());
+		m_networkState = MediaPlayer::Loading;
+        m_readyState = MediaPlayer::HaveMetadata;
+        m_mediaObject->pause();
+		m_player->networkStateChanged();
+		m_player->readyStateChanged();
+	}
 }
 
 bool MediaPlayerPrivate::seeking() const
@@ -291,8 +343,8 @@ float MediaPlayerPrivate::duration() const
 
     float duration = m_mediaObject->totalTime() / 1000.0f;
 
-    if (duration == 0.0f) // We are streaming
-        duration = std::numeric_limits<float>::infinity();
+    if (duration == 0.0f) // We might be streaming
+        duration = m_shortSoundDuration;
 
     LOG(Media, "MediaPlayerPrivatePhonon::duration() --> %f", duration);
     return duration;
@@ -300,7 +352,17 @@ float MediaPlayerPrivate::duration() const
 
 float MediaPlayerPrivate::currentTime() const
 {
-    float currentTime = m_mediaObject->currentTime() / 1000.0f;
+	float currentTime = 0.0f;
+
+	if (!isShortSound())
+		currentTime = m_mediaObject->currentTime() / 1000.0f;
+	else {
+		// use our internal timer
+		if (!m_shortSoundTime.isNull()) {
+			currentTime = m_shortSoundTime.elapsed() / 1000.0f;
+			currentTime = currentTime > m_shortSoundDuration ? m_shortSoundDuration : currentTime;
+		}
+	}
 
     LOG(Media, "MediaPlayerPrivatePhonon::currentTime() --> %f", currentTime);
     return currentTime;
@@ -314,8 +376,9 @@ PassRefPtr<TimeRanges> MediaPlayerPrivate::buffered() const
 
 float MediaPlayerPrivate::maxTimeSeekable() const
 {
-    notImplemented();
-    return 0.0f;
+	if (m_isSeekable)
+	    return duration();
+	return 0.0f;
 }
 
 unsigned MediaPlayerPrivate::bytesLoaded() const
@@ -370,7 +433,11 @@ void MediaPlayerPrivate::updateStates()
 
     Phonon::State phononState = m_mediaObject->state();
 
-    if (phononState == Phonon::StoppedState) {
+	if (phononState == Phonon::PlayingState) {
+		if (isShortSound()) {
+			m_shortSoundTime.start();
+		}
+	} else if (phononState == Phonon::StoppedState) {
         if (m_readyState < MediaPlayer::HaveMetadata) {
             m_networkState = MediaPlayer::Loading; // FIXME: should this be MediaPlayer::Idle?
             m_readyState = MediaPlayer::HaveMetadata;
@@ -494,11 +561,48 @@ void MediaPlayerPrivate::metaDataChanged()
 {
     LOG(Media, "MediaPlayerPrivatePhonon::metaDataChanged()");
     LOG_MEDIAOBJECT();
+
+	// set the seekable flag here, as seekableChanged() never gets called
+	m_isSeekable = m_mediaObject->isSeekable();
+
+#ifdef _WINDOWS
+	// There is a bug with vorbis and directx9 where a sound < 1 second reports its length as 0. We read the ogg header directly to get the sound length.
+	const QString & sourceName = m_mediaObject->currentSource().url().toString();
+	if (!isShortSound() && sourceName.endsWith(".ogg")) {
+		// see if this is a short sound
+		FILE* pFile = NULL;
+		std::wstring wstr = m_mediaObject->currentSource().url().toLocalFile().toStdWString();
+		if (_wfopen_s(&pFile, wstr.c_str(), L"rb") != 0)
+			return;
+
+		if (pFile == NULL)
+			return;
+
+		OggVorbis_File* pVFile = new OggVorbis_File;
+
+		// test the file to see if it is the right format
+		if (ov_test_callbacks(pFile, pVFile, NULL, 0, OV_CALLBACKS_DEFAULT) == 0) {
+			// finish opening the file
+			if (ov_test_open(pVFile) == 0) {
+				m_shortSoundDuration = (float)ov_time_total(pVFile, -1);
+				LOG(Media, "MediaPlayerPrivatePhonon::metaDataChanged() set short sound duration to %f", m_shortSoundDuration);
+				ov_clear(pVFile);
+				// ov_clear will close pFile
+				pFile = NULL;
+			}
+		}
+		if (pFile != NULL)
+			fclose(pFile);
+		delete pVFile;
+	}
+#endif
 }
 
-void MediaPlayerPrivate::seekableChanged(bool)
+// this function appears to never get called
+void MediaPlayerPrivate::seekableChanged(bool seekable)
 {
-    notImplemented();
+	LOG(Media, "MediaPlayerPrivatePhonon::seekableChanged()");
+	m_isSeekable = m_mediaObject->isSeekable();
     LOG_MEDIAOBJECT();
 }
 
