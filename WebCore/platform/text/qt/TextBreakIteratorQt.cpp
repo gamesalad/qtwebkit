@@ -38,9 +38,9 @@ namespace WebCore {
     class TextBreakIterator : public QTextBoundaryFinder {
     public:
         TextBreakIterator(QTextBoundaryFinder::BoundaryType type, const UChar* string, int length)
-            : QTextBoundaryFinder(type, (const QChar*)string, length, buffer, sizeof(buffer))
+			: QTextBoundaryFinder(type, (const QChar*)string, length, buffer, sizeof(buffer))
             , length(length)
-            , string(string) {}
+			, string(string) {}
         TextBreakIterator()
             : QTextBoundaryFinder()
             , length(0)
@@ -55,13 +55,23 @@ namespace WebCore {
         if (!string || !length)
             return 0;
 
-        if (iterator.isValid() && type == iterator.type() && length == iterator.length
-            && memcmp(string, iterator.string, length) == 0) {
-            iterator.toStart();
-            return &iterator;
-        }
+		if (iterator.isValid() && type == iterator.type() && length == iterator.length
+			&& memcmp(string, iterator.string, length) == 0) {
+			iterator.toStart();
+			return &iterator;
+		}
 
-        iterator = TextBreakIterator(type, string, length);
+		// NOTE: this leads to a memory leak on shutdown; fix before submitting back to the main QTWeb-kit branch
+		if (iterator.string != 0)
+		{
+			delete[] iterator.string;
+			iterator.string = 0;
+			iterator.length = 0;
+		}
+		UChar* stringMem = new UChar[length + 1];
+		memcpy(stringMem, string, length);
+		stringMem[length] = 0;
+        iterator = TextBreakIterator(type, stringMem, length);
 
         return &iterator;
     }
